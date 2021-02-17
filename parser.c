@@ -51,7 +51,7 @@ void    free_coord(coord *list)
     free(list);
 }
 
-double  **list_to_array(coord *list, int pts_nbr)
+double  **list_to_array(coord *list, int pts_nbr, int flag)
 {
     int             i = -1;
     int             j;
@@ -65,27 +65,29 @@ double  **list_to_array(coord *list, int pts_nbr)
         ret[i] = malloc(pts_nbr * sizeof(double));
         ptr2 = &(coord){.next = list};
         j = -1;
-        while ((ptr2 = ptr2->next))
-        {
+        while ((ptr2 = ptr2->next)) {
             ret[i][++j] = distance(*ptr1, *ptr2);
-            printf(" %4.1f ", ret[i][j]);
+            if (flag & 1)
+                printf(" %4.1f ", ret[i][j]);
         }
-        printf("\n");
+        if (flag & 1)
+            printf("\n");
     }
-    printf("\n");
+    if (flag & 1)
+        printf("\n");
     if (list)
         free_coord(list);
     return (ret);
 }
 
-double  **parse(char *path)
+double  **parse(char *path, int *pts_nbr, int flag)
 {
     FILE            *file = fopen(path,"r");
     coord           *tmp = &(coord){};
     coord           *list = NULL;
     char            *line = NULL;
     size_t          length = 0;
-    int             pts_nbr = 0;
+    *pts_nbr = 0;
 
     while (getline(&line, &length, file)  != -1)
     {
@@ -94,8 +96,7 @@ double  **parse(char *path)
         tmp = tmp->next;
         line = NULL;
         length = 0;
-        pts_nbr++;
+        (*pts_nbr)++;
     }
-    nbr = pts_nbr;
-    return (list_to_array(list, pts_nbr));
+    return (list_to_array(list, *pts_nbr, flag));
 }

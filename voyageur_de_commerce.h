@@ -7,6 +7,8 @@
 #include <fcntl.h>
 #include <math.h>
 #include <string.h>
+#include <time.h>
+
 
 typedef struct      s_coord
 {
@@ -15,9 +17,6 @@ typedef struct      s_coord
     struct s_coord      *next;
 }                   coord;
 
-int nbr;
-double global_min = HUGE_VAL;
-
-double  **parse(char *path);
+double  **parse(char *path, int *pts_nbr, int flag);
 
 #endif //VOYAGEUR_DE_COMMERCE_H

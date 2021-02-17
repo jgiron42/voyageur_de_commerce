@@ -1,2 +1,8 @@
 /cmake-build-debug/
 /CMakeLists.txt
+.gitignore
+/no_opti
+/opti1
+/opti2
+/opti3
+/a.out
