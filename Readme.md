@@ -14,5 +14,5 @@ le programme prends en argument le chemin vers le fichier de configuration, l'op
 * ajouter la gestion des coordonnées géographiques
 * ajouter plus d algorithmes...
 
-# et si j'ai la motivation:
+### et si j'ai la motivation:
 * faire un retour graphique interactif (avec des images satellites dans le cas de coordonnées géographiques(parce que c'est classe))
