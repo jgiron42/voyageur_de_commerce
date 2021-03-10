@@ -11,5 +11,8 @@ le programme prends en argument le chemin vers le fichier de configuration, l'op
 ## a faire:
 * regler le bug qui provoque une difference entre la longueur du chemin calculé et la valeur de retour de l algorithme
 * utiliser getopt pour gerer les options et pouvoir manipuler plus simplement le programme
-
+* ajouter la gestion des coordonnées géographiques
 * ajouter plus d algorithmes...
+
+# et si j'ai la motivation:
+* faire un retour graphique interactif (avec des images satellites dans le cas de coordonnées géographiques(parce que c'est classe))
