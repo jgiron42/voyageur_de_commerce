@@ -6,11 +6,11 @@ le programme prends en arguments un fichier constitué des coordonnées des diff
 ### compilation
 pour compiler le programme, il suffit d'executer la commande make dans le dossier du projet.
 ### execution
-le programme prends en argument le chemin vers le fichier de configuration, l'option "-d" peut etre indiquée pour deboguer 
+le programme prends en argument le chemin vers le fichier de configuration (executer avec -h pour plus d'informations) 
 
 ## a faire:
 * regler le bug qui provoque une difference entre la longueur du chemin calculé et la valeur de retour de l algorithme
-* utiliser getopt pour gerer les options et pouvoir manipuler plus simplement le programme
+* ~~utiliser getopt pour gerer les options et pouvoir manipuler plus simplement le programme~~
 * ajouter la gestion des coordonnées géographiques
 * ajouter plus d algorithmes...
 
