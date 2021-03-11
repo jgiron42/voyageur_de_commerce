@@ -18,5 +18,8 @@ typedef struct      s_coord
 }                   coord;
 
 double  **parse(char *path, int *pts_nbr, int flag);
+double    call_proximity(double **array, int *current_config, int nbr);
+double    call_bb(double **array, int *current_config, int nbr);
+double    call_bf(double **array, int *current_config, int nbr);
 
-#endif //VOYAGEUR_DE_COMMERCE_H
+#endif

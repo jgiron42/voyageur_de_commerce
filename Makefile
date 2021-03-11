@@ -1,7 +1,10 @@
 NAME    =   voyageur_de_commerce
 
 SRCS    =   main.c \
-            parser.c
+            parser.c \
+            algorithmes/branch_and_bound_proximity.c \
+            algorithmes/branch_and_bound.c \
+            algorithmes/brute_force.c
 
 OBJS    =   ${SRCS:.c=.o}
 
