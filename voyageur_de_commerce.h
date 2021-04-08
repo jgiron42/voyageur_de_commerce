@@ -8,7 +8,9 @@
 #include <math.h>
 #include <string.h>
 #include <time.h>
+#include <limits.h>
 #include <errno.h>
+#include <pthread.h>
 
 typedef struct      s_coord
 {
@@ -19,10 +21,11 @@ typedef struct      s_coord
 
 typedef struct		s_opt
 {
-	char	*path;
-	char	debug;
-	char	time;
-	double	(*algo)(double**, int*, int);
+	char			*path;
+	char			debug;
+	char			time;
+	double			(*algo)(double**, int*, int);
+	pthread_mutex_t protection;
 }					t_opt;
 
 #define NAME "voyageur_de_commerce"
@@ -36,8 +39,9 @@ typedef struct		s_opt
 "   "NAME" -t -a proximity file           solve the problem for the file \"file\" with the algorithm \"proximity\" and display the time\n"
 
 double  **parse(char *path, int *pts_nbr, t_opt options);
-double    call_proximity(double **array, int *current_config, int nbr);
+double    call_bbnn(double **array, int *current_config, int nbr);
 double    call_bb(double **array, int *current_config, int nbr);
 double    call_bf(double **array, int *current_config, int nbr);
+
 
 #endif

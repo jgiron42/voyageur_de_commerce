@@ -58,23 +58,42 @@ double  **list_to_array(coord *list, int pts_nbr, t_opt options)
     coord           *ptr1 = &(coord){.next = list};
     coord           *ptr2;
     double          **ret = malloc(pts_nbr * sizeof(double *));
+    double			max = INT_MIN;
+    int				precision = 1;
 
-    while ((ptr1 = ptr1->next))
-    {
-        i++;
-        ret[i] = malloc(pts_nbr * sizeof(double));
-        ptr2 = &(coord){.next = list};
-        j = -1;
-        while ((ptr2 = ptr2->next)) {
+	while ((ptr1 = ptr1->next))
+	{
+		i++;
+		ret[i] = malloc(pts_nbr * sizeof(double));
+		ptr2 = &(coord){.next = list};
+		j = -1;
+		while ((ptr2 = ptr2->next)) {
             ret[i][++j] = distance(*ptr1, *ptr2);
-            if (options.debug & 1)
-                printf(" %4.1f ", ret[i][j]);
+            max = ret[i][j] > max ? ret[i][j] : max;
         }
-        if (options.debug & 1)
-            printf("\n");
     }
-    if (options.debug & 1)
-        printf("\n");
+    while (max > 9)
+	{
+    	max /= 10;
+    	precision++;
+	}
+    i = -2;
+    while (options.debug && ++i < pts_nbr)
+	{
+    	j = -1;
+    	if (i == -1)
+    		printf("%*s ", 3, "");
+    	else
+			printf("%-3d ", i);
+		while (++j < pts_nbr)
+		{
+			if (i == -1)
+    			printf(" %*d ", precision + 2, j);
+			else
+				printf(" %*.1f ", precision + 2, ret[i][j]);
+		}
+		printf("\n%s", i + 1 == pts_nbr ? "\n":  "");
+	}
     if (list)
         free_coord(list);
     return (ret);
