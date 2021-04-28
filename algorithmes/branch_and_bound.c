@@ -42,6 +42,8 @@ double    call_bb(double **array, int *current_config, int nbr)
 	already_visited[0] = 1;
 	current_config[0] = 0;
 	result = travelling_salesman_bb(array, 0, already_visited, 0, current_config, 0, &global_min, nbr, &function_call);
+	current_config[0] = 0;
+	free(already_visited);
 //	printf("\nfunction call number: %d\n", function_call);
 	return result;
 }

@@ -36,7 +36,7 @@ int   **get_proximity(double **array, int nbr)
 		while (++j < nbr)
 			ret[i][j] = j;
 		sort_array_from_ref(ret[i], array[i], nbr);
-//		j = -1;
+		j = -1;
 //		while (++j < nbr)
 //			printf("%2d ", ret[i][j]);
 //		printf("\n");
@@ -89,5 +89,10 @@ double    call_bbnn(double **array, int *current_config, int nbr)
 	current_config[0] = 0;
 	result = travelling_salesman_bbnn(array, 0, already_visited, 0, current_config, 0, &global_min, nbr, proximity_array, &function_call);
 //	printf("\nfunction call number: %d\n", function_call);
+	current_config[0] = 0;
+	for (int i = 0; i < nbr; i++)
+		free(proximity_array[i]);
+	free(proximity_array);
+	free(already_visited);
 	return result;
 }

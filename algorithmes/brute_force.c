@@ -37,5 +37,7 @@ double    call_bf(double **array, int *current_config, int nbr)
 	already_visited[0] = 1;
 	current_config[0] = 0;
 	result = travelling_salesman_bf(array, 0, already_visited, 0, current_config, 0, &global_min, nbr);
+	current_config[0] = 0;
+	free(already_visited);
 	return result;
 }

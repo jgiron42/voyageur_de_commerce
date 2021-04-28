@@ -24,6 +24,7 @@ coord   *parse_line(char *line)
     int     i = -1;
 
     ret->dim = -1;
+    ret->next = 0;
     while (ptr != end)
     {
         ptr = end;
@@ -94,16 +95,15 @@ double  **list_to_array(coord *list, int pts_nbr, t_opt options)
 		}
 		printf("\n%s", i + 1 == pts_nbr ? "\n":  "");
 	}
-    if (list)
-        free_coord(list);
-    return (ret);
+
+	return (ret);
 }
 
-double  **parse(char *path, int *pts_nbr, t_opt options)
+double  **parse(char *path, int *pts_nbr, t_opt options, coord **list)
 {
     FILE            *file = fopen(path,"r");
     coord           *tmp = &(coord){};
-    coord           *list = NULL;
+    *list = NULL;
     char            *line = NULL;
     size_t          length = 0;
     *pts_nbr = 0;
@@ -115,11 +115,47 @@ double  **parse(char *path, int *pts_nbr, t_opt options)
     while (getline(&line, &length, file)  != -1)
     {
         tmp->next = parse_line(line);
-        list = !list ? tmp->next : list;
+        *list = !*list ? tmp->next : *list;
         tmp = tmp->next;
         line = NULL;
         length = 0;
         (*pts_nbr)++;
     }
-    return (list_to_array(list, *pts_nbr, options));
+    free(line);
+    fclose(file);
+    return (list_to_array(*list, *pts_nbr, options));
+}
+
+double	**random_set(t_opt options, int *nbr, coord **list)
+{
+	coord   *tmp = &(coord){};
+	coord   *tmp2;
+	int		x;
+	int		y;
+	char	line[30];
+
+	*list = NULL;
+	srand(time(NULL));
+	*nbr = options.random;
+	for (int i = 0; i < options.random; i++)
+	{
+		new_point:;
+		x = rand() % 100;
+		y = rand() % 100;
+		tmp2 = *list;
+		while (tmp2)
+		{
+			if (tmp2->a[0] == x && tmp2->a[1] == y)
+				goto new_point;
+			tmp2 = tmp2->next;
+		}
+		bzero(line, 30);
+		snprintf(line, 30,"%d %d\n",x, y);
+		if (options.debug)
+			printf("%d %d\n",x, y);
+		tmp->next = parse_line(strdup(line));
+		*list = !*list ? tmp->next : *list;
+		tmp = tmp->next;
+	}
+	return (list_to_array(*list, *nbr, options));
 }
