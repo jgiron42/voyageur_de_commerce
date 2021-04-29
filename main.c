@@ -1,9 +1,9 @@
 #include <sys/wait.h>
 #include "voyageur_de_commerce.h"
 
-char	*name_list[] = { "bb", "bf", "bbnn", "nn", "lk", "all", NULL};
-char	*full_name_list[] = { "branch and bound", "brute force", "branch and bound with nearest neighbours", "nearest neighbour", "Lin-Kernighan", NULL};
-double	(*algo_list[])(double**, int*, int) = {&call_bb, &call_bf, &call_bbnn, &call_nn, &call_lk, NULL, &call_bbnn};
+char	*name_list[] = { "bb", "bf", "bbnn", "nn", "2opt", "all", NULL};
+char	*full_name_list[] = { "branch and bound", "brute force", "branch and bound with nearest neighbours", "nearest neighbour", "2-opt", NULL};
+double	(*algo_list[])(double**, int*, int) = {&call_bb, &call_bf, &call_bbnn, &call_nn, &call_2opt, NULL, &call_bbnn};
 
 void    call_fonction(double **array, int nbr, t_opt options, double f(double**, int*, int), char *name, coord *list)
 {

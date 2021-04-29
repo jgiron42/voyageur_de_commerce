@@ -61,7 +61,7 @@ typedef struct		s_opt
 "-l,        display a list of all algorithm available\n"\
 "-h,        display this help and exit\n\n"\
 "Examples:\n"                                       \
-"   "NAME" -t -a proximity file           solve the problem for the file \"file\" with the algorithm \"proximity\" and display the time\n"
+"   "NAME" -t -a nn file           solve the problem for the file \"file\" with the algorithm \"nearest neighbour\" and display the time\n"
 #define DEFAULT_WIN_X 500
 #define DEFAULT_WIN_Y 500
 double		**parse(char *path, int *pts_nbr, t_opt options, coord **list);
@@ -70,7 +70,8 @@ double		call_bbnn(double **array, int *current_config, int nbr);
 double		call_bb(double **array, int *current_config, int nbr);
 double		call_bf(double **array, int *current_config, int nbr);
 double		call_nn(double **array, int *current_config, int nbr);
-double		call_lk(double **array, int *current_config, int nbr);
+//double		call_lk(double **array, int *current_config, int nbr);
+double    call_2opt(double **array, int *current_config, int nbr);
 int			**get_proximity(double **array, int nbr);
 void        sort_array_from_ref(int *ret, double *ref, int nbr);
 void		render(int *result, coord *list, int pts_nbr, char *name);

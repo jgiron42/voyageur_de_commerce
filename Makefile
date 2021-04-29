@@ -5,9 +5,9 @@ SRCS    =   main.c \
             algorithmes/branch_and_bound_proximity.c \
             algorithmes/branch_and_bound.c \
             algorithmes/brute_force.c \
-            algorithmes/lin-kernighan.c \
+            algorithmes/2-opt.c \
             algorithmes/nearest_neighbour.c \
-	    render.c \
+		    render.c \
 
 OBJS    =   ${SRCS:.c=.o}
 
