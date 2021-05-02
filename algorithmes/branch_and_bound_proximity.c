@@ -1,4 +1,4 @@
-#include "../voyageur_de_commerce.h"
+#include "../TSP.h"
 
 void    swap(int *a, int *b)
 {

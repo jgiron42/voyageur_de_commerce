@@ -1,17 +1,24 @@
-
-#include "../voyageur_de_commerce.h"
+#include "../TSP.h"
 #define A (current_config[i])
 #define B (i + 1 == nbr ? current_config[0] : current_config[i + 1])
 #define C (current_config[j])
 #define D (j + 1 == nbr ? current_config[0] : current_config[j + 1])
 
-double    call_2opt(double **array, int *current_config, int nbr)
+double    opt2(double **array, int *current_config, int nbr, int nn)
 {
-	double ret = call_nn(array, current_config, nbr);
+	double ret;
 	int		tmp_config[nbr];
 	int		l;
 	int		direction;
 
+	if (nn)
+		ret = call_nn(array, current_config, nbr);
+	else
+	{
+		ret = 0;
+		for (int i = 0; i < nbr; i++)
+			current_config[i] = i;
+	}
 	for (int i = 0; i < nbr; i++) {
 		for (int j = 0; j < nbr; j++)
 		{
@@ -48,4 +55,14 @@ double    call_2opt(double **array, int *current_config, int nbr)
 		}
 	}
 	return (ret);
+}
+
+double    call_2opt(double **array, int *current_config, int nbr)
+{
+	return (opt2(array, current_config, nbr, 0));
+}
+
+double    call_2optnn(double **array, int *current_config, int nbr)
+{
+	return (opt2(array, current_config, nbr, 1));
 }

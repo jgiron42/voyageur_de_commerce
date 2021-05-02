@@ -1,5 +1,5 @@
 
-#include "voyageur_de_commerce.h"
+#include "TSP.h"
 
 char			*ft_strjoin(char const *s1, char const *s2)
 {
@@ -79,33 +79,35 @@ vect	get_pt_pos(coord *list, int index)
 	return (index == 0 ? (vect){list->a[0], list->a[1]} : get_pt_pos(list->next, index - 1));
 }
 
-void	render(int *result, coord *list, int pts_nbr, char *name)
+void	render(int *result, coord *list, int pts_nbr, char *name, t_opt options)
 {
 	SDL_Event events;
 	vect	pos;
 	mat2_2	app;
+	char *title;
 
 	if (SDL_Init(SDL_INIT_VIDEO) == -1)
 		exit(1);
-	SDL_Window *win = SDL_CreateWindow(ft_strjoin(NAME " - " , name), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, DEFAULT_WIN_X, DEFAULT_WIN_Y, 0);
+	SDL_Window *win = SDL_CreateWindow(title = ft_strjoin(NAME " - " , name), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, options.win_x, options.win_y, 0);
 	SDL_Renderer *ren = SDL_CreateRenderer(win, -1, 0);
 	SDL_SetRenderDrawColor(ren, 255, 255, 255, 255);
-	get_scale(DEFAULT_WIN_X, DEFAULT_WIN_Y, &pos, &app, list);
+	get_scale(options.win_x, options.win_y, &pos, &app, list);
 	for (int i = 0; i < pts_nbr; i++)
 	{
 		vect p1 = get_pt_pos(list, result[i]);
 		vect p2 = get_pt_pos(list, result[(i + 1) == pts_nbr ? 0 : i + 1]);
 		SDL_SetRenderDrawColor(ren, 255, 255, 255, 255);
-		SDL_RenderDrawLine(ren, (int)((p1.x - pos.x) * app.a) + DEFAULT_WIN_X / 20, (int)((p1.y - pos.y) * app.d) + DEFAULT_WIN_Y  / 20,
-		(int)((p2.x - pos.x) * app.a) + DEFAULT_WIN_X / 20, (int)((p2.y - pos.y) * app.d) + DEFAULT_WIN_Y  / 20);
+		SDL_RenderDrawLine(ren, (int)((p1.x - pos.x) * app.a) + options.win_x / 20, (int)((p1.y - pos.y) * app.d) + options.win_y  / 20,
+		(int)((p2.x - pos.x) * app.a) + options.win_x / 20, (int)((p2.y - pos.y) * app.d) + options.win_y / 20);
 //		put_text(ren, "test", (int)((p1.x - pos.x) * app.a) - DEFAULT_WIN_X / 20, (int)((p1.y - pos.y) * app.d) - DEFAULT_WIN_Y  / 20);
 		SDL_SetRenderDrawColor(ren, 255, 0, 0, 255);
-		SDL_RenderDrawPoint(ren, (int)((p1.x - pos.x) * app.a) + DEFAULT_WIN_X / 20, (int)((p1.y - pos.y) * app.d) + DEFAULT_WIN_Y  / 20);
+		SDL_RenderDrawPoint(ren, (int)((p1.x - pos.x) * app.a) + options.win_x / 20, (int)((p1.y - pos.y) * app.d) + options.win_y / 20);
 	}
 	SDL_RenderPresent(ren);
 	while (1)
 		if (SDL_PollEvent(&events) && events.type == SDL_WINDOWEVENT && events.window.event == SDL_WINDOWEVENT_CLOSE)
 			break;
+	free(title);
 	SDL_DestroyRenderer(ren);
 	SDL_DestroyWindow(win);
 	SDL_Quit();

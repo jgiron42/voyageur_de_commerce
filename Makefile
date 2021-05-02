@@ -1,4 +1,4 @@
-NAME    =   voyageur_de_commerce
+NAME    =   TSP
 
 SRCS    =   main.c \
             parser.c \

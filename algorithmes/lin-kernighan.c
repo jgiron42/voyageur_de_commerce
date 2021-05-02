@@ -1,5 +1,4 @@
-
-#include "../voyageur_de_commerce.h"
+#include "../TSP.h"
 #define A (current_config[i])
 #define B (i + 1 == nbr ? current_config[0] : current_config[i + 1])
 #define C (current_config[j])
@@ -39,22 +38,31 @@ double edge_length(double **array, int nbr, int edge)
 	return (array[edge][edge + 1 == nbr ? 0 : edge + 1]);
 }
 
-double    call_lk(double **array, int *current_config, int nbr)
+double		lk(double **array, int *current_config, int nbr, int i, int t1, int t2im1, double current_cost, double new_cost)
+{
+	for (int t2ip1 = 0; t2ip1 < nbr; t2ip1++) {
+		if (array[t2im1 + 1][t2ip1] + new_cost < current_cost) {    //do flip
+			i++; //step 5
+			if (i == nbr - 1)
+				return (HUGE_VAL);
+			for (int j = 0; j < nbr; j++) {
+				if (i - j <= 1 && i - j >= -1)
+					continue;
+				if (array[A][B] > array[A][C]) {
+					// lk()
+				}
+			}
+		}
+	}
+}
+
+
+double    call_lk(double **array, int *T, int nbr)
 {
 	double ret = call_nn(array, current_config, nbr);
 
-	for (int i = 0; i < nbr; i++) {
-		for (int j = 0; j < nbr; j++)
-		{
-			if (i - j <= 1 && i - j >= -1)
-				continue;
-			if (array[A][B] + array[C][D] > array[A][C] + array[B][D])
-			{
-				swap_edges(current_config, nbr, i, j);
-				i = 0;
-				break ;
-			}
-		}
+	for (int t1 = 0; t1 < nbr; t1++) {
+		lk(array, T, nbr, 1, t1, t1, edge_length(array, nbr, t1), 0);
 	}
 	return (ret);
 }

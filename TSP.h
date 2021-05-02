@@ -53,7 +53,7 @@ typedef struct		s_opt
 	sem_t			protection;
 }					t_opt;
 
-#define NAME "voyageur_de_commerce"
+#define NAME "TSP"
 #define HELP "Usage: "NAME" [OPTION]... [FILE]...\n"\
 "solve the travelling salesman problem for a given set of point.\n\n"\
 "-a [ALGO], select which algorithm should be used (\"all\" for all)\n"\

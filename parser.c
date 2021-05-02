@@ -1,5 +1,11 @@
-#include "voyageur_de_commerce.h"
+#include "TSP.h"
 
+double  spherical_distance(coord p1, coord p2)
+{
+	if (p1.dim != 2 || p2.dim != 2)
+		return (0);
+	return (acos(sin(degreesToRadians(p1.a[0])) * sin(degreesToRadians(p2.a[0])) + cos(degreesToRadians(p1.a[0])) * cos(degreesToRadians(p2.a[0])) * cos(degreesToRadians(p2.a[1] - p1.a[1]))));
+}
 
 double  distance(coord p1, coord p2)
 {
@@ -54,13 +60,13 @@ void    free_coord(coord *list)
 
 double  **list_to_array(coord *list, int pts_nbr, t_opt options)
 {
-    int             i = -1;
-    int             j;
-    coord           *ptr1 = &(coord){.next = list};
-    coord           *ptr2;
-    double          **ret = malloc(pts_nbr * sizeof(double *));
-    double			max = INT_MIN;
-    int				precision = 1;
+	int			i = -1;
+	int			j;
+	coord		*ptr1 = &(coord){.next = list};
+	coord		*ptr2;
+	double		**ret = malloc(pts_nbr * sizeof(double *));
+	double		max = INT_MIN;
+	int			precision = 1;
 
 	while ((ptr1 = ptr1->next))
 	{
@@ -69,8 +75,8 @@ double  **list_to_array(coord *list, int pts_nbr, t_opt options)
 		ptr2 = &(coord){.next = list};
 		j = -1;
 		while ((ptr2 = ptr2->next)) {
-            ret[i][++j] = distance(*ptr1, *ptr2);
-            max = ret[i][j] > max ? ret[i][j] : max;
+			ret[i][++j] = options.spherical ? spherical_distance(*ptr1, *ptr2) :  distance(*ptr1, *ptr2);
+			max = ret[i][j] > max ? ret[i][j] : max;
         }
     }
     while (max > 9)

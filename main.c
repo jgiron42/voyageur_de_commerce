@@ -1,9 +1,9 @@
 #include <sys/wait.h>
-#include "voyageur_de_commerce.h"
+#include "TSP.h"
 
-char	*name_list[] = { "bb", "bf", "bbnn", "nn", "2opt", "all", NULL};
-char	*full_name_list[] = { "branch and bound", "brute force", "branch and bound with nearest neighbours", "nearest neighbour", "2-opt", NULL};
-double	(*algo_list[])(double**, int*, int) = {&call_bb, &call_bf, &call_bbnn, &call_nn, &call_2opt, NULL, &call_bbnn};
+char	*name_list[] = { "bb", "bf", "bbnn", "nn", "2opt", "2optnn", "all", NULL};
+char	*full_name_list[] = { "branch and bound", "brute force", "branch and bound with nearest neighbours", "nearest neighbour", "2-opt", "2-opt with nearest neighbours start",NULL};
+double	(*algo_list[])(double**, int*, int) = {&call_bb, &call_bf, &call_bbnn, &call_nn, &call_2opt, &call_2optnn, NULL, &call_2optnn};
 
 void    call_fonction(double **array, int nbr, t_opt options, double f(double**, int*, int), char *name, coord *list)
 {
@@ -18,10 +18,7 @@ void    call_fonction(double **array, int nbr, t_opt options, double f(double**,
 	start = clock();
 	result = f(array, result_path, nbr);
 	end = clock();
-//    result_path[0] = 0;
-//    pthread_mutex_lock(&options.protection);
-
-	sem_wait(options.protection);
+	sem_wait(&options.protection);
     if (name)
 		printf("\n%s:\n",name);
     if (options.debug)
@@ -46,11 +43,10 @@ void    call_fonction(double **array, int nbr, t_opt options, double f(double**,
 		else
 			printf("time: %lfs\n", time);
 	}
-	sem_post(options.protection);
+	sem_post(&options.protection);
 	if (options.graphical)
-		render(result_path, list, nbr, name);
+		render(result_path, list, nbr, name, options);
 	free(result_path);
-//	pthread_mutex_unlock(&options.protection);
 }
 
 double	(*get_function(char *name))(double**, int*, int)
@@ -62,10 +58,11 @@ double	(*get_function(char *name))(double**, int*, int)
 
 t_opt parse_argv(int argc, char **argv)
 {
-	t_opt	ret = (t_opt){0,0, 0, 0, 0, 0, 0, 0};
+	t_opt	ret = (t_opt){0,0, 0, 0, 0, 0, 0, 0, DEFAULT_WIN_X, DEFAULT_WIN_Y,0};
 	int		c;
 	char	*algo_name = strdup("default");
-	while ((c = getopt(argc, argv, "gdhlta:r:")) != -1)
+	char	*end = NULL;
+	while ((c = getopt(argc, argv, "gdshltw:a:r:")) != -1)
 	{
 		switch (c)
 		{
@@ -74,6 +71,9 @@ t_opt parse_argv(int argc, char **argv)
 				break;
 			case 'd':
 				ret.debug = 1;
+				break;
+			case 's':
+				ret.spherical = 1;
 				break;
 			case 't':
 				ret.time = 1;
@@ -87,6 +87,15 @@ t_opt parse_argv(int argc, char **argv)
 			case 'a':
 				free(algo_name);
 				algo_name = strdup(optarg);
+				break;
+			case 'w':
+				ret.win_x = strtol(optarg, &end, 10);
+				if (ret.win_x <= 0)
+					ret.win_x = DEFAULT_WIN_X;
+				end++;
+				ret.win_y = strtol(end, &end, 10);
+				if (ret.win_y <= 0)
+					ret.win_y = DEFAULT_WIN_Y;
 				break;
 			case 'h':
 				printf(HELP);
@@ -126,8 +135,7 @@ int main(int argc, char **argv) {
     	fprintf(stderr, "Missing argument\n");
     	return (1);
 	}
-	sem_unlink(NAME);
-	options.protection = sem_open(NAME, O_CREAT | O_EXCL, 0644, 1);
+	sem_init(&options.protection, 1, 1);
 	array = options.random ? random_set(options, &nbr, &coords)
 						   : parse(options.path, &nbr, options, &coords);
 	if (!options.algo)
@@ -142,7 +150,7 @@ int main(int argc, char **argv) {
 					for (int i = 0; i < nbr; i++)
 						free(array[i]);
 					free(array);
-					sem_close(options.protection);
+					sem_close(&options.protection);
 					exit(0);
 				}
 		}
@@ -156,5 +164,5 @@ int main(int argc, char **argv) {
 	for (int i = 0; i < nbr; i++)
 		free(array[i]);
 	free(array);
-	sem_close(options.protection);
+	sem_close(&options.protection);
 }

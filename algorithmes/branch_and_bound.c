@@ -1,4 +1,4 @@
-#include "../voyageur_de_commerce.h"
+#include "../TSP.h"
 
 double travelling_salesman_bb(double **array, int i, char *already_visited, int depth, int *current_config, double current_value, double *global_min, int nbr, int *function_call)
 {

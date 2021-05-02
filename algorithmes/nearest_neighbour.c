@@ -1,4 +1,4 @@
-#include "../voyageur_de_commerce.h"
+#include "../TSP.h"
 
 
 double		nn(double **array, int **proximity, int *current_config, int nbr, char *already_visited, int pos, int start, int depth)
