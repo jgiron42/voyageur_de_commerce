@@ -46,24 +46,31 @@ typedef struct		s_opt
 	char			time;
 	double			(*algo)(double**, int*, int);
 	int				k;
+	int				spherical;
 	int				random;
-	sem_t			*protection;
+	int				win_x;
+	int				win_y;
+	sem_t			protection;
 }					t_opt;
 
 #define NAME "voyageur_de_commerce"
 #define HELP "Usage: "NAME" [OPTION]... [FILE]...\n"\
 "solve the travelling salesman problem for a given set of point.\n\n"\
-"-a=[ALGO], select which algorithm should be used (\"all\" for all)\n"\
-"-d,        show debug informations\n"\
-"-t,        show the time taken by each algorithm\n"\
-"-r=[N],    solve the problem with a random set of N points \n"\
+"-a [ALGO], select which algorithm should be used (\"all\" for all)\n"\
+"-d,        show debug information\n"\
 "-g,        display a graphical representation of the solution \n"\
+"-h,        display this help and exit\n"\
 "-l,        display a list of all algorithm available\n"\
-"-h,        display this help and exit\n\n"\
-"Examples:\n"                                       \
+"-r [N],    solve the problem with a random set of N points \n"\
+"-s,        tell the program to consider input coordinates as spherical coordinates\n"\
+"-t,        show the time taken by each algorithm\n"\
+"-w [X:Y],  set the window dimension to X Y \n"\
+"\nExamples:\n"                                       \
 "   "NAME" -t -a nn file           solve the problem for the file \"file\" with the algorithm \"nearest neighbour\" and display the time\n"
 #define DEFAULT_WIN_X 500
 #define DEFAULT_WIN_Y 500
+#define degreesToRadians(angleDegrees) ((angleDegrees) * M_PI / 180.0)
+
 double		**parse(char *path, int *pts_nbr, t_opt options, coord **list);
 double		**random_set(t_opt options, int *nbr, coord **list);
 double		call_bbnn(double **array, int *current_config, int nbr);
@@ -72,9 +79,10 @@ double		call_bf(double **array, int *current_config, int nbr);
 double		call_nn(double **array, int *current_config, int nbr);
 //double		call_lk(double **array, int *current_config, int nbr);
 double    call_2opt(double **array, int *current_config, int nbr);
+double    call_2optnn(double **array, int *current_config, int nbr);
 int			**get_proximity(double **array, int nbr);
 void        sort_array_from_ref(int *ret, double *ref, int nbr);
-void		render(int *result, coord *list, int pts_nbr, char *name);
+void		render(int *result, coord *list, int pts_nbr, char *name, t_opt options);
 void		swap(int *a, int *b);
 char		*ft_strjoindf(char const *s1, char const *s2);
 
