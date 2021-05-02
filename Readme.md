@@ -5,13 +5,16 @@ Ce programme est un solveur du probleme du voyageur de commerce
 le programme prends en arguments un fichier constitué des coordonnées des différents points de passage, chaques lignes représente un point et est constituée des différents composant du point separés d'un espace. La dimension dans laquelle seront effectués les calculs est la dimension du point avec la plus grande dimension, si certains points ont une dimension supérieure à d'autres alors la plus grande dimension sera conservé et les points avec les plus petites dimensions verront leurs coordonnées completées par des 0 pour les dimensions manquantes.
 ### compilation
 pour compiler le programme, il suffit d'executer la commande make dans le dossier du projet.
+/!\ attention, pour compiler il faut que vous ayez installé la libsdl2
 ### execution
-le programme prends en argument le chemin vers le fichier de configuration (executer avec -h pour plus d'informations) 
+le programme prends en argument le chemin vers le fichier de configuration (executer avec -h pour plus d'informations)
 
 ## a faire:
-* regler le bug qui provoque une difference entre la longueur du chemin calculé et la valeur de retour de l algorithme
+* ~~regler le bug qui provoque une difference entre la longueur du chemin calculé et la valeur de retour de l algorithme~~
 * ~~utiliser getopt pour gerer les options et pouvoir manipuler plus simplement le programme~~
-* ajouter la gestion des coordonnées géographiques
+* ~~ajouter la gestion des coordonnées géographiques~~
+* ~~ajouter un mode random~~  
+* ~~ajouter un rendu graphique~~  
 * ajouter plus d algorithmes...
 
 ### et si j'ai la motivation:
